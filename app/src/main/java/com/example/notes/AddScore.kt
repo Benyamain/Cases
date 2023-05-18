@@ -36,7 +36,7 @@ class AddScore : AppCompatActivity() {
             val scoreDescription = binding.etScore.text.toString()
 
             if (title.isNotEmpty() || scoreDescription.isNotEmpty()) {
-                val formatter = SimpleDateFormat("EEE, d MMM yyyy HH:mm a")
+                val formatter = SimpleDateFormat("EEE, MMM d, yyyy, HH:mm a")
 
                 if (isUpdate) {
                     score = Score(oldScore.id, title, scoreDescription, formatter.format(Date()))

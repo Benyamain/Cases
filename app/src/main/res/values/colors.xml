@@ -7,9 +7,10 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="gray">#4A4F51</color>
 
     <color name="score_color_1">#FF6263</color>
-    <color name="score_color_2">#234C4ED</color>
+    <color name="score_color_2">#23C4ED</color>
     <color name="score_color_3">#38CC77</color>
     <color name="score_color_4">#D9D55B</color>
     <color name="score_color_5">#318BD1</color>
