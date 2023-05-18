@@ -93,7 +93,7 @@ class MainActivity : AppCompatActivity(), ScoresAdapter.ScoresClickListener, Pop
 
     override fun onItemClicked(score: Score) {
         val intent = Intent(this@MainActivity, AddScore::class.java)
-        intent.putExtra("current_score", score)
+        intent.putExtra("currentScore", score)
         updateScore.launch(intent)
     }
 

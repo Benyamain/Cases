@@ -10,4 +10,4 @@ data class Score(
     @ColumnInfo(name = "title") val title: String?,
     @ColumnInfo(name = "score") val score: String?,
     @ColumnInfo(name = "date") val date: String?
-)
+) : java.io.Serializable
