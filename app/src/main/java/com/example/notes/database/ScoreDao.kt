@@ -18,7 +18,7 @@ interface ScoreDao {
     suspend fun delete(score: Score)
 
     @Query("SELECT * FROM scores_table ORDER BY id ASC")
-    fun getAllScores(): LiveData<Score>
+    fun getAllScores(): LiveData<List<Score>>
 
     @Query("UPDATE scores_table SET title = :title, score = :score WHERE id = :id")
     suspend fun update(id: Int?, title: String?, score: String?)
