@@ -11,7 +11,7 @@ import com.example.notes.R
 import com.example.notes.models.Score
 import kotlin.random.Random
 
-class ScoresAdapter(private val context: Context, val listener: ScoresItemClickListener): RecyclerView.Adapter<ScoresAdapter.ScoreViewHolder>() {
+class ScoresAdapter(private val context: Context, val listener: ScoresClickListener): RecyclerView.Adapter<ScoresAdapter.ScoreViewHolder>() {
 
     private val scoresList = ArrayList<Score>()
     private val databaseList = ArrayList<Score>()
@@ -89,7 +89,7 @@ class ScoresAdapter(private val context: Context, val listener: ScoresItemClickL
         val date = itemView.findViewById<TextView>(R.id.tv_date)
     }
 
-    interface ScoresItemClickListener {
+    interface ScoresClickListener {
 
         fun onItemClicked(score: Score)
 
