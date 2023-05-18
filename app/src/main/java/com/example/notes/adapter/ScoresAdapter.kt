@@ -9,13 +9,12 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.notes.R
 import com.example.notes.models.Score
-import org.w3c.dom.Text
 import kotlin.random.Random
 
-class ScoresAdapter(private val context: Context): RecyclerView.Adapter<ScoresAdapter.ScoreViewHolder> {
+class ScoresAdapter(private val context: Context, val listener: ScoresItemClickListener): RecyclerView.Adapter<ScoresAdapter.ScoreViewHolder>() {
 
-    private val scoresList: ArrayList<Score>()
-    private val databaseList: ArrayList<Score>()
+    private val scoresList = ArrayList<Score>()
+    private val databaseList = ArrayList<Score>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ScoreViewHolder {
         return ScoreViewHolder(LayoutInflater.from(context).inflate(R.layout.list_item, parent, false))
@@ -27,11 +26,44 @@ class ScoresAdapter(private val context: Context): RecyclerView.Adapter<ScoresAd
 
     override fun onBindViewHolder(holder: ScoreViewHolder, position: Int) {
         val currentScore = scoresList[position]
+
         holder.title.text = currentScore.title
         holder.title.isSelected = true
         holder.score.text = currentScore.score
         holder.date.text = currentScore.date
         holder.date.isSelected = true
+        holder.scoresLayout.setCardBackgroundColor(holder.itemView.resources.getColor(randomColor(), null))
+
+        holder.scoresLayout.setOnClickListener {
+            listener.onItemClicked(scoresList[holder.adapterPosition])
+        }
+
+        holder.scoresLayout.setOnLongClickListener {
+            listener.onLongItemClicked(scoresList[holder.adapterPosition], holder.scoresLayout)
+            true
+        }
+    }
+
+    fun updateList(newList: List<Score>) {
+        databaseList.clear()
+        databaseList.addAll(newList)
+
+        scoresList.clear()
+        scoresList.addAll(databaseList)
+
+        notifyDataSetChanged()
+    }
+
+    fun filterList(search: String) {
+        scoresList.clear()
+
+        for (item in databaseList) {
+            if (item.title?.lowercase()?.contains(search.lowercase()) == true || item.score?.lowercase()?.contains(search.lowercase()) == true) {
+                scoresList.add(item)
+            }
+        }
+
+        notifyDataSetChanged()
     }
 
     fun randomColor(): Int {
@@ -55,5 +87,12 @@ class ScoresAdapter(private val context: Context): RecyclerView.Adapter<ScoresAd
         val title = itemView.findViewById<TextView>(R.id.tv_title)
         val score = itemView.findViewById<TextView>(R.id.tv_score)
         val date = itemView.findViewById<TextView>(R.id.tv_date)
+    }
+
+    interface ScoresItemClickListener {
+
+        fun onItemClicked(score: Score)
+
+        fun onLongItemClicked(score: Score, cardView: CardView)
     }
 }
