@@ -46,15 +46,6 @@ class SearchCase : AppCompatActivity(), CasesAdapter.CasesClickListener, PopupMe
         setContentView(binding.root)
 
         initializeUI()
-
-        viewModel = ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(application)).get(CaseViewModel::class.java)
-        viewModel.allCases.observe(this) { list ->
-            list?.let {
-                adapter.updateList(list)
-            }
-        }
-
-        database = CaseDatabase.getDatabase(this)
     }
 
     private fun initializeUI() {
@@ -70,6 +61,18 @@ class SearchCase : AppCompatActivity(), CasesAdapter.CasesClickListener, PopupMe
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 if (newText != null) {
+                    viewModel = ViewModelProvider(this@SearchCase, ViewModelProvider.AndroidViewModelFactory.getInstance(application)).get(CaseViewModel::class.java)
+                    viewModel.allCases.observe(this@SearchCase) { list ->
+                        list?.let {
+                            for (item in list) {
+                                if (item.title?.lowercase()?.contains(newText.lowercase()) == true || item.databaseCase?.lowercase()?.contains(newText.lowercase()) == true) {
+                                    database = CaseDatabase.getDatabase(this@SearchCase)
+                                    adapter.updateList(list)
+                                }
+                            }
+                        }
+                    }
+
                     adapter.filterList(newText)
                 }
 

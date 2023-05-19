@@ -32,7 +32,7 @@ class CasesAdapter(private val context: Context, val listener: CasesClickListene
         holder.case.text = currentCase.databaseCase
         holder.date.text = currentCase.date
         holder.date.isSelected = true
-        holder.casesLayout.setCardBackgroundColor(holder.itemView.resources.getColor(randomColor(), null))
+        holder.casesLayout.setCardBackgroundColor(holder.itemView.resources.getColor(R.color.case_color_5, null))
 
         holder.casesLayout.setOnClickListener {
             listener.onItemClicked(casesList[holder.adapterPosition])
