@@ -1,4 +1,4 @@
-package com.example.cases.database
+package com.example.cases.database.home.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
@@ -6,7 +6,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.cases.models.data.Case
+import com.example.cases.models.data.home.Case
 
 @Dao
 interface CaseDao {

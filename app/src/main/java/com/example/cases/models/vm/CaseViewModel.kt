@@ -4,9 +4,9 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
-import com.example.cases.database.CaseDatabase
-import com.example.cases.database.CasesRepository
-import com.example.cases.models.data.Case
+import com.example.cases.database.db.CaseDatabase
+import com.example.cases.database.home.repository.CasesRepository
+import com.example.cases.models.data.home.Case
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

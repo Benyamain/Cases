@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.annotation.RequiresApi
 import com.example.cases.databinding.ActivityTrashCaseViewBinding
-import com.example.cases.models.data.Case
+import com.example.cases.models.data.home.Case
 import java.util.*
 
 class TrashCaseView : AppCompatActivity() {

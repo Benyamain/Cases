@@ -1,16 +1,20 @@
-package com.example.cases.database
+package com.example.cases.database.db
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.cases.models.data.Case
+import com.example.cases.database.home.dao.CaseDao
+import com.example.cases.database.trash.dao.TrashDao
+import com.example.cases.models.data.home.Case
+import com.example.cases.models.data.trash.Trash
 import com.example.cases.utilities.DATABASE_NAME
 
-@Database(entities = arrayOf(Case::class), version = 1, exportSchema = false)
+@Database(entities = [Case::class, Trash::class], version = 2, exportSchema = false)
 abstract class CaseDatabase: RoomDatabase() {
 
     abstract fun getCaseDao(): CaseDao
+    abstract fun getTrashDao(): TrashDao
 
     companion object {
         @Volatile

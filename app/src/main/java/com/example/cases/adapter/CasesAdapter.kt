@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cases.R
-import com.example.cases.models.data.Case
+import com.example.cases.models.data.home.Case
 import kotlin.random.Random
 
 class CasesAdapter(private val context: Context, val listener: CasesClickListener): RecyclerView.Adapter<CasesAdapter.CaseViewHolder>() {

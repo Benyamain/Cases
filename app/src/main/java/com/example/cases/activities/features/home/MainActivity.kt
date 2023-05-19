@@ -17,9 +17,9 @@ import com.example.cases.activities.features.search.SearchCase
 import com.example.cases.activities.features.trash.TrashCase
 import com.example.cases.activities.features.insert.AddCase
 import com.example.cases.adapter.CasesAdapter
-import com.example.cases.database.CaseDatabase
+import com.example.cases.database.db.CaseDatabase
 import com.example.cases.databinding.ActivityMainBinding
-import com.example.cases.models.data.Case
+import com.example.cases.models.data.home.Case
 import com.example.cases.models.vm.CaseViewModel
 
 class MainActivity : AppCompatActivity(), CasesAdapter.CasesClickListener,
@@ -150,10 +150,10 @@ class MainActivity : AppCompatActivity(), CasesAdapter.CasesClickListener,
         if (item?.itemId == R.id.delete_case) {
             viewModel.deleteCase(selectedCase)
 
-            val intent = Intent()
+            /*val intent = Intent()
             val caseList = ArrayList<Case>()
             caseList.add(selectedCase)
-            intent.putExtra("trash_case", caseList)
+            intent.putExtra("trash_case", caseList)*/
 
             return true
         }

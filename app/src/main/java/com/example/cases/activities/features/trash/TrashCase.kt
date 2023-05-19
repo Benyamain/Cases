@@ -17,9 +17,9 @@ import com.example.cases.activities.features.trash.view.TrashCaseView
 import com.example.cases.activities.features.home.MainActivity
 import com.example.cases.activities.features.search.SearchCase
 import com.example.cases.adapter.CasesAdapter
-import com.example.cases.database.CaseDatabase
+import com.example.cases.database.db.CaseDatabase
 import com.example.cases.databinding.ActivityTrashCaseBinding
-import com.example.cases.models.data.Case
+import com.example.cases.models.data.home.Case
 import com.example.cases.models.vm.CaseViewModel
 
 class TrashCase : AppCompatActivity(), CasesAdapter.CasesClickListener,
@@ -68,8 +68,8 @@ class TrashCase : AppCompatActivity(), CasesAdapter.CasesClickListener,
         ).get(CaseViewModel::class.java)
         viewModel.allCases.observe(this) { list ->
             list?.let {
-                val intent = Intent()
-                val caseList = intent.getSerializableExtra("trash_case") as? ArrayList<Case>
+                /*val intent = Intent()
+                val caseList = intent.getSerializableExtra("trash_case") as? ArrayList<Case>*/
                 adapter.updateList(list)
             }
         }
@@ -109,6 +109,11 @@ class TrashCase : AppCompatActivity(), CasesAdapter.CasesClickListener,
             }
 
             true
+        }
+
+        binding.trashImageSearch.setOnClickListener {
+            val intent = Intent(this, SearchCase::class.java)
+            getContent.launch(intent)
         }
     }
 

@@ -17,9 +17,9 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.cases.R
 import com.example.cases.activities.features.insert.AddCase
 import com.example.cases.adapter.CasesAdapter
-import com.example.cases.database.CaseDatabase
+import com.example.cases.database.db.CaseDatabase
 import com.example.cases.databinding.ActivitySearchCaseBinding
-import com.example.cases.models.data.Case
+import com.example.cases.models.data.home.Case
 import com.example.cases.models.vm.CaseViewModel
 import java.util.*
 
