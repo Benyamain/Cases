@@ -1,4 +1,4 @@
-package com.example.cases
+package com.example.cases.activities
 
 import android.app.Activity
 import android.content.Intent
@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.example.cases.R
 import com.example.cases.adapter.CasesAdapter
 import com.example.cases.database.CaseDatabase
 import com.example.cases.databinding.ActivitySearchCaseBinding

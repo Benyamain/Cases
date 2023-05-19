@@ -1,4 +1,4 @@
-package com.example.cases
+package com.example.cases.activities
 
 import android.app.Activity
 import android.content.Intent
@@ -9,7 +9,6 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.example.cases.databinding.ActivityAddCaseBinding
 import com.example.cases.models.Case
-import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle

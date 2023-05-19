@@ -1,4 +1,4 @@
-package com.example.cases
+package com.example.cases.activities
 
 import android.app.Activity
 import android.content.Intent
@@ -13,39 +13,58 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.cardview.widget.CardView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.example.cases.R
 import com.example.cases.adapter.CasesAdapter
 import com.example.cases.database.CaseDatabase
 import com.example.cases.databinding.ActivityMainBinding
+import com.example.cases.databinding.ActivityTrashCaseBinding
 import com.example.cases.models.Case
 import com.example.cases.models.CaseViewModel
 
-class MainActivity : AppCompatActivity(), CasesAdapter.CasesClickListener, PopupMenu.OnMenuItemClickListener {
+class TrashCase : AppCompatActivity(), CasesAdapter.CasesClickListener,
+    PopupMenu.OnMenuItemClickListener {
 
-    private lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityTrashCaseBinding
     private lateinit var database: CaseDatabase
     lateinit var viewModel: CaseViewModel
     lateinit var adapter: CasesAdapter
     lateinit var selectedCase: Case
     lateinit var toggle: ActionBarDrawerToggle
 
-    private val updateCase = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            val case = result.data?.getSerializableExtra("case") as? Case
+    private val updateCase =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val case = result.data?.getSerializableExtra("case") as? Case
 
-            if (case != null) {
-                viewModel.updateCase(case)
+                if (case != null) {
+                    viewModel.updateCase(case)
+                }
             }
         }
-    }
+
+    // When user taps on fab, we retrieve the result code
+    private val getContent =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val case = result.data?.getSerializableExtra("case") as? Case
+
+                if (case != null) {
+                    viewModel.insertCase(case)
+                }
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityTrashCaseBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         initializeUI()
 
-        viewModel = ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(application)).get(CaseViewModel::class.java)
+        viewModel = ViewModelProvider(
+            this,
+            ViewModelProvider.AndroidViewModelFactory.getInstance(application)
+        ).get(CaseViewModel::class.java)
         viewModel.allCases.observe(this) { list ->
             list?.let {
                 adapter.updateList(list)
@@ -56,17 +75,27 @@ class MainActivity : AppCompatActivity(), CasesAdapter.CasesClickListener, Popup
     }
 
     private fun initializeUI() {
-        binding.homeRecyclerView.setHasFixedSize(true)
-        binding.homeRecyclerView.layoutManager = StaggeredGridLayoutManager(2, LinearLayout.VERTICAL)
+        binding.trashRecyclerView.setHasFixedSize(true)
+        binding.trashRecyclerView.layoutManager =
+            StaggeredGridLayoutManager(2, LinearLayout.VERTICAL)
         adapter = CasesAdapter(this, this)
-        binding.homeRecyclerView.adapter = adapter
+        binding.trashRecyclerView.adapter = adapter
 
-        toggle = ActionBarDrawerToggle(this@MainActivity, binding.drawer, binding.toolbar, R.string.open, R.string.close)
-        binding.drawer.addDrawerListener(toggle)
+        val intent = Intent()
+        val caseList = intent.getSerializableExtra("trash_case") as? ArrayList<Case>
+
+        toggle = ActionBarDrawerToggle(
+            this@TrashCase,
+            binding.trashDrawer,
+            binding.trashToolbar,
+            R.string.open,
+            R.string.close
+        )
+        binding.trashDrawer.addDrawerListener(toggle)
         toggle.syncState()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        binding.navView.setNavigationItemSelectedListener {
+        binding.trashNavView.setNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.nav_home -> {
                     startActivity(Intent(this, MainActivity::class.java))
@@ -79,27 +108,6 @@ class MainActivity : AppCompatActivity(), CasesAdapter.CasesClickListener, Popup
 
             true
         }
-
-        // When user taps on fab, we retrieve the result code
-        val getContent = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                val case = result.data?.getSerializableExtra("case") as? Case
-
-                if (case != null) {
-                    viewModel.insertCase(case)
-                }
-            }
-        }
-
-        binding.fbAddCase.setOnClickListener {
-            val intent = Intent(this, AddCase::class.java)
-            getContent.launch(intent)
-        }
-
-        binding.imageSearch.setOnClickListener {
-            val intent = Intent(this, SearchCase::class.java)
-            getContent.launch(intent)
-        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -111,7 +119,7 @@ class MainActivity : AppCompatActivity(), CasesAdapter.CasesClickListener, Popup
     }
 
     override fun onItemClicked(case: Case) {
-        val intent = Intent(this@MainActivity, AddCase::class.java)
+        val intent = Intent(this@TrashCase, AddCase::class.java)
         intent.putExtra("current_case", case)
         updateCase.launch(intent)
     }
@@ -123,14 +131,19 @@ class MainActivity : AppCompatActivity(), CasesAdapter.CasesClickListener, Popup
 
     private fun popupDisplay(cardView: CardView) {
         val popup = PopupMenu(this, cardView)
-        popup.setOnMenuItemClickListener(this@MainActivity)
-        popup.inflate(R.menu.popup_menu)
+        popup.setOnMenuItemClickListener(this@TrashCase)
+        popup.inflate(R.menu.trash_popup_menu)
         popup.show()
     }
 
     override fun onMenuItemClick(item: MenuItem?): Boolean {
-        if (item?.itemId == R.id.delete_case) {
+        if (item?.itemId == R.id.trash_delete_case) {
             viewModel.deleteCase(selectedCase)
+
+            val intent = Intent()
+            val caseList = ArrayList<Case>()
+            caseList.add(selectedCase)
+            intent.putExtra("trash_case", caseList)
 
             return true
         }
