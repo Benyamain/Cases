@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.widget.LinearLayout
 import android.widget.PopupMenu
@@ -23,6 +24,9 @@ import com.example.cases.models.data.home.Case
 import com.example.cases.models.data.trash.Trash
 import com.example.cases.models.vm.home.CaseViewModel
 import com.example.cases.models.vm.trash.TrashViewModel
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 
 class MainActivity : AppCompatActivity(), CasesAdapter.CasesClickListener,
     PopupMenu.OnMenuItemClickListener {
@@ -33,6 +37,7 @@ class MainActivity : AppCompatActivity(), CasesAdapter.CasesClickListener,
     lateinit var trashViewModel: TrashViewModel
     lateinit var adapter: CasesAdapter
     lateinit var selectedCase: Case
+    private lateinit var trash: Trash
     lateinit var toggle: ActionBarDrawerToggle
 
     private val updateCase =
@@ -173,13 +178,21 @@ class MainActivity : AppCompatActivity(), CasesAdapter.CasesClickListener,
 
     override fun onMenuItemClick(item: MenuItem?): Boolean {
         if (item?.itemId == R.id.delete_case) {
-            caseViewModel.deleteCase(selectedCase)
+            val id = selectedCase.id
+            val title = selectedCase.title
+            val caseDescription = selectedCase.databaseCase
+            val caseDate = selectedCase.date
+
+            trash = Trash(id, title, caseDescription, caseDate)
+            Log.d("Garbage", "$trash")
 
             val intent = Intent()
-            /*val caseList = ArrayList<Case>()
-            caseList.add(selectedCase)*/
-            intent.putExtra("trash_case", selectedCase)
+            intent.putExtra("trash", trash)
+            Log.d("Garbage", "${intent.extras}")
+            setResult(Activity.RESULT_OK, intent)
 
+
+            caseViewModel.deleteCase(selectedCase)
 
             return true
         }

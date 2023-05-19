@@ -12,7 +12,8 @@
         android:theme="@style/Theme.Cases"
         tools:targetApi="31">
         <activity
-            android:name=".SearchTrashCase"
+            android:name=".activities.trash.features.search.SearchTrashCase"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".activities.trash.features.view.ViewTrashCase"

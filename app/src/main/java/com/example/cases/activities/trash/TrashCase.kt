@@ -3,6 +3,7 @@ package com.example.cases.activities.trash
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.widget.LinearLayout
 import android.widget.PopupMenu
@@ -16,6 +17,7 @@ import com.example.cases.R
 import com.example.cases.activities.trash.features.view.ViewTrashCase
 import com.example.cases.activities.home.MainActivity
 import com.example.cases.activities.home.features.search.SearchCase
+import com.example.cases.activities.trash.features.search.SearchTrashCase
 import com.example.cases.adapter.trash.TrashAdapter
 import com.example.cases.database.db.CaseDatabase
 import com.example.cases.databinding.ActivityTrashCaseBinding
@@ -35,7 +37,8 @@ class TrashCase : AppCompatActivity(), TrashAdapter.CasesClickListener,
     private val updateTrash =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
-                val trashCase = result.data?.getSerializableExtra("case") as? Trash
+                val trashCase = result.data?.getSerializableExtra("trash") as? Trash
+                Log.d("TrashCase", "$trashCase")
 
                 if (trashCase != null) {
                     viewModel.updateTrash(trashCase)
@@ -48,6 +51,7 @@ class TrashCase : AppCompatActivity(), TrashAdapter.CasesClickListener,
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 val trashCase = result.data?.getSerializableExtra("trash") as? Trash
+                Log.d("TrashCase", "$trashCase")
 
                 if (trashCase != null) {
                     viewModel.insertTrash(trashCase)
@@ -71,10 +75,12 @@ class TrashCase : AppCompatActivity(), TrashAdapter.CasesClickListener,
                 /*val intent = Intent()
                 val caseList = intent.getSerializableExtra("trash_case") as? ArrayList<Case>*/
                 adapter.updateList(list)
+                Log.d("TrashCase", "onCreate: $list")
             }
         }
 
         database = CaseDatabase.getDatabase(this)
+        Log.d("TrashCreate", "onCreate: $database")
     }
 
     private fun initializeUI() {
@@ -112,7 +118,7 @@ class TrashCase : AppCompatActivity(), TrashAdapter.CasesClickListener,
         }
 
         binding.trashImageSearch.setOnClickListener {
-            val intent = Intent(this, SearchCase::class.java)
+            val intent = Intent(this, SearchTrashCase::class.java)
             getTrashContent.launch(intent)
         }
     }

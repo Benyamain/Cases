@@ -20,6 +20,7 @@ import com.example.cases.adapter.home.CasesAdapter
 import com.example.cases.database.db.CaseDatabase
 import com.example.cases.databinding.ActivitySearchCaseBinding
 import com.example.cases.models.data.home.Case
+import com.example.cases.models.data.trash.Trash
 import com.example.cases.models.vm.home.CaseViewModel
 import java.util.*
 
@@ -30,6 +31,7 @@ class SearchCase : AppCompatActivity(), CasesAdapter.CasesClickListener, PopupMe
     lateinit var viewModel: CaseViewModel
     lateinit var adapter: CasesAdapter
     lateinit var selectedCase: Case
+    private lateinit var trash: Trash
 
     private val updateCase = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
@@ -105,6 +107,17 @@ class SearchCase : AppCompatActivity(), CasesAdapter.CasesClickListener, PopupMe
 
     override fun onMenuItemClick(item: MenuItem?): Boolean {
         if (item?.itemId == R.id.delete_case) {
+            val id = selectedCase.id
+            val title = selectedCase.title.toString()
+            val caseDescription = selectedCase.databaseCase.toString()
+            val caseDate = selectedCase.date.toString()
+
+            trash = Trash(id, title, caseDescription, caseDate)
+
+            val intent = Intent()
+            intent.putExtra("trash", trash)
+            setResult(Activity.RESULT_OK, intent)
+
             viewModel.deleteCase(selectedCase)
 
             return true
