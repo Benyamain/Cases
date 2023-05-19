@@ -68,7 +68,9 @@ class MainActivity : AppCompatActivity(), CasesAdapter.CasesClickListener, Popup
 
         binding.navView.setNavigationItemSelectedListener {
             when (it.itemId) {
-                R.id.nav_home -> {}
+                R.id.nav_home -> {
+                    startActivity(Intent(this, MainActivity::class.java))
+                }
                 R.id.nav_download -> {}
                 R.id.nav_login -> {}
                 R.id.nav_settings -> {}

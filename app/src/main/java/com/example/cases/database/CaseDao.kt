@@ -20,6 +20,9 @@ interface CaseDao {
     @Query("SELECT * FROM cases_table ORDER BY id ASC")
     fun getAllCases(): LiveData<List<Case>>
 
+    @Query("SELECT * FROM cases_table ORDER BY id ASC WHERE id NOT IN ")
+    fun getAllDeletedCases(): LiveData<List<Case>>
+
     @Query("UPDATE cases_table SET title = :title, database_case = :databaseCase WHERE id = :id")
     suspend fun update(id: Int?, title: String?, databaseCase: String?)
 }
