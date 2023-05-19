@@ -54,10 +54,10 @@ class MainActivity : AppCompatActivity(), CasesAdapter.CasesClickListener, Popup
     }
 
     private fun initializeUI() {
-        binding.recyclerView.setHasFixedSize(true)
-        binding.recyclerView.layoutManager = StaggeredGridLayoutManager(2, LinearLayout.VERTICAL)
+        binding.homeRecyclerView.setHasFixedSize(true)
+        binding.homeRecyclerView.layoutManager = StaggeredGridLayoutManager(2, LinearLayout.VERTICAL)
         adapter = CasesAdapter(this, this)
-        binding.recyclerView.adapter = adapter
+        binding.homeRecyclerView.adapter = adapter
 
         // When user taps on fab, we retrieve the result code
         val getContent = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
