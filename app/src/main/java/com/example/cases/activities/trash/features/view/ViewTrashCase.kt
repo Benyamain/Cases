@@ -6,12 +6,13 @@ import android.os.Bundle
 import androidx.annotation.RequiresApi
 import com.example.cases.databinding.ActivityTrashCaseViewBinding
 import com.example.cases.models.data.home.Case
+import com.example.cases.models.data.trash.Trash
 import java.util.*
 
-class TrashCaseView : AppCompatActivity() {
+class ViewTrashCase : AppCompatActivity() {
 
     private lateinit var binding: ActivityTrashCaseViewBinding
-    private lateinit var oldCase: Case
+    private lateinit var oldTrash: Trash
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,14 +21,14 @@ class TrashCaseView : AppCompatActivity() {
         setContentView(binding.root)
 
         try {
-            oldCase = intent.getSerializableExtra("current_case") as Case
-            binding.tcvEtTitle.setText(oldCase.title)
-            binding.tcvEtCase.setText(oldCase.databaseCase)
+            oldTrash = intent.getSerializableExtra("current_trash") as Trash
+            binding.vtcEtTitle.setText(oldTrash.title)
+            binding.vtcEtCase.setText(oldTrash.databaseCase)
         } catch(e: Exception) {
             e.printStackTrace()
         }
 
-        binding.tcvImageBackArrow.setOnClickListener {
+        binding.vtcImageBackArrow.setOnClickListener {
             onBackPressed()
         }
     }

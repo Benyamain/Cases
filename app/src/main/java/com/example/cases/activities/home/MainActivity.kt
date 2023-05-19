@@ -20,14 +20,17 @@ import com.example.cases.adapter.home.CasesAdapter
 import com.example.cases.database.db.CaseDatabase
 import com.example.cases.databinding.ActivityMainBinding
 import com.example.cases.models.data.home.Case
+import com.example.cases.models.data.trash.Trash
 import com.example.cases.models.vm.home.CaseViewModel
+import com.example.cases.models.vm.trash.TrashViewModel
 
 class MainActivity : AppCompatActivity(), CasesAdapter.CasesClickListener,
     PopupMenu.OnMenuItemClickListener {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var database: CaseDatabase
-    lateinit var viewModel: CaseViewModel
+    lateinit var caseViewModel: CaseViewModel
+    lateinit var trashViewModel: TrashViewModel
     lateinit var adapter: CasesAdapter
     lateinit var selectedCase: Case
     lateinit var toggle: ActionBarDrawerToggle
@@ -38,7 +41,7 @@ class MainActivity : AppCompatActivity(), CasesAdapter.CasesClickListener,
                 val case = result.data?.getSerializableExtra("case") as? Case
 
                 if (case != null) {
-                    viewModel.updateCase(case)
+                    caseViewModel.updateCase(case)
                 }
             }
         }
@@ -50,7 +53,29 @@ class MainActivity : AppCompatActivity(), CasesAdapter.CasesClickListener,
                 val case = result.data?.getSerializableExtra("case") as? Case
 
                 if (case != null) {
-                    viewModel.insertCase(case)
+                    caseViewModel.insertCase(case)
+                }
+            }
+        }
+
+    private val updateTrash =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val trashCase = result.data?.getSerializableExtra("trash") as? Trash
+
+                if (trashCase != null) {
+                    trashViewModel.updateTrash(trashCase)
+                }
+            }
+        }
+
+    private val getTrashContent =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val trash = result.data?.getSerializableExtra("trash") as? Trash
+
+                if (trash != null) {
+                    trashViewModel.insertTrash(trash)
                 }
             }
         }
@@ -62,11 +87,11 @@ class MainActivity : AppCompatActivity(), CasesAdapter.CasesClickListener,
 
         initializeUI()
 
-        viewModel = ViewModelProvider(
+        caseViewModel = ViewModelProvider(
             this,
             ViewModelProvider.AndroidViewModelFactory.getInstance(application)
         ).get(CaseViewModel::class.java)
-        viewModel.allCases.observe(this) { list ->
+        caseViewModel.allCases.observe(this) { list ->
             list?.let {
                 adapter.updateList(list)
             }
@@ -148,12 +173,13 @@ class MainActivity : AppCompatActivity(), CasesAdapter.CasesClickListener,
 
     override fun onMenuItemClick(item: MenuItem?): Boolean {
         if (item?.itemId == R.id.delete_case) {
-            viewModel.deleteCase(selectedCase)
+            caseViewModel.deleteCase(selectedCase)
 
-            /*val intent = Intent()
-            val caseList = ArrayList<Case>()
-            caseList.add(selectedCase)
-            intent.putExtra("trash_case", caseList)*/
+            val intent = Intent()
+            /*val caseList = ArrayList<Case>()
+            caseList.add(selectedCase)*/
+            intent.putExtra("trash_case", selectedCase)
+
 
             return true
         }

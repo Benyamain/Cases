@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.trash.features.view.TrashCaseView">
+    tools:context=".activities.trash.features.view.ViewTrashCase">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/tcv_toolbar"
+        android:id="@+id/vtc_toolbar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="#FFFFFF"
@@ -22,7 +22,7 @@
 
 
             <ImageView
-                android:id="@+id/tcv_image_back_arrow"
+                android:id="@+id/vtc_image_back_arrow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
@@ -32,7 +32,7 @@
     </androidx.appcompat.widget.Toolbar>
 
     <EditText
-        android:id="@+id/tcv_et_title"
+        android:id="@+id/vtc_et_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -46,10 +46,10 @@
         android:textSize="26sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tcv_toolbar"/>
+        app:layout_constraintTop_toBottomOf="@id/vtc_toolbar"/>
 
     <EditText
-        android:id="@+id/tcv_et_case"
+        android:id="@+id/vtc_et_case"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="26dp"
@@ -62,7 +62,7 @@
         android:background="@null"
         android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/tcv_et_title"
-        app:layout_constraintStart_toStartOf="@+id/tcv_et_title"
-        app:layout_constraintTop_toBottomOf="@+id/tcv_et_title" />
+        app:layout_constraintEnd_toEndOf="@+id/vtc_et_title"
+        app:layout_constraintStart_toStartOf="@+id/vtc_et_title"
+        app:layout_constraintTop_toBottomOf="@+id/vtc_et_title" />
 </androidx.constraintlayout.widget.ConstraintLayout>

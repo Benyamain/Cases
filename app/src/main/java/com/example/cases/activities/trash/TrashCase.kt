@@ -13,44 +13,44 @@ import androidx.cardview.widget.CardView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.cases.R
-import com.example.cases.activities.trash.features.view.TrashCaseView
+import com.example.cases.activities.trash.features.view.ViewTrashCase
 import com.example.cases.activities.home.MainActivity
 import com.example.cases.activities.home.features.search.SearchCase
-import com.example.cases.adapter.home.CasesAdapter
+import com.example.cases.adapter.trash.TrashAdapter
 import com.example.cases.database.db.CaseDatabase
 import com.example.cases.databinding.ActivityTrashCaseBinding
-import com.example.cases.models.data.home.Case
-import com.example.cases.models.vm.home.CaseViewModel
+import com.example.cases.models.data.trash.Trash
+import com.example.cases.models.vm.trash.TrashViewModel
 
-class TrashCase : AppCompatActivity(), CasesAdapter.CasesClickListener,
+class TrashCase : AppCompatActivity(), TrashAdapter.CasesClickListener,
     PopupMenu.OnMenuItemClickListener {
 
     private lateinit var binding: ActivityTrashCaseBinding
     private lateinit var database: CaseDatabase
-    lateinit var viewModel: CaseViewModel
-    lateinit var adapter: CasesAdapter
-    lateinit var selectedCase: Case
+    lateinit var viewModel: TrashViewModel
+    lateinit var adapter: TrashAdapter
+    lateinit var selectedTrash: Trash
     lateinit var toggle: ActionBarDrawerToggle
 
-    private val updateCase =
+    private val updateTrash =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
-                val case = result.data?.getSerializableExtra("case") as? Case
+                val trashCase = result.data?.getSerializableExtra("case") as? Trash
 
-                if (case != null) {
-                    viewModel.updateCase(case)
+                if (trashCase != null) {
+                    viewModel.updateTrash(trashCase)
                 }
             }
         }
 
     // When user taps on fab, we retrieve the result code
-    private val getContent =
+    private val getTrashContent =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
-                val case = result.data?.getSerializableExtra("case") as? Case
+                val trashCase = result.data?.getSerializableExtra("trash") as? Trash
 
-                if (case != null) {
-                    viewModel.insertCase(case)
+                if (trashCase != null) {
+                    viewModel.insertTrash(trashCase)
                 }
             }
         }
@@ -65,8 +65,8 @@ class TrashCase : AppCompatActivity(), CasesAdapter.CasesClickListener,
         viewModel = ViewModelProvider(
             this,
             ViewModelProvider.AndroidViewModelFactory.getInstance(application)
-        ).get(CaseViewModel::class.java)
-        viewModel.allCases.observe(this) { list ->
+        ).get(TrashViewModel::class.java)
+        viewModel.allTrash.observe(this) { list ->
             list?.let {
                 /*val intent = Intent()
                 val caseList = intent.getSerializableExtra("trash_case") as? ArrayList<Case>*/
@@ -81,7 +81,7 @@ class TrashCase : AppCompatActivity(), CasesAdapter.CasesClickListener,
         binding.trashRecyclerView.setHasFixedSize(true)
         binding.trashRecyclerView.layoutManager =
             StaggeredGridLayoutManager(2, LinearLayout.VERTICAL)
-        adapter = CasesAdapter(this, this)
+        adapter = TrashAdapter(this, this)
         binding.trashRecyclerView.adapter = adapter
 
         toggle = ActionBarDrawerToggle(
@@ -113,7 +113,7 @@ class TrashCase : AppCompatActivity(), CasesAdapter.CasesClickListener,
 
         binding.trashImageSearch.setOnClickListener {
             val intent = Intent(this, SearchCase::class.java)
-            getContent.launch(intent)
+            getTrashContent.launch(intent)
         }
     }
 
@@ -125,14 +125,14 @@ class TrashCase : AppCompatActivity(), CasesAdapter.CasesClickListener,
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onItemClicked(case: Case) {
-        val intent = Intent(this@TrashCase, TrashCaseView::class.java)
-        intent.putExtra("current_case", case)
-        updateCase.launch(intent)
+    override fun onItemClicked(trash: Trash) {
+        val intent = Intent(this@TrashCase, ViewTrashCase::class.java)
+        intent.putExtra("current_trash", trash)
+        updateTrash.launch(intent)
     }
 
-    override fun onLongItemClicked(case: Case, cardView: CardView) {
-        selectedCase = case
+    override fun onLongItemClicked(trash: Trash, cardView: CardView) {
+        selectedTrash = trash
         popupDisplay(cardView)
     }
 
@@ -145,12 +145,13 @@ class TrashCase : AppCompatActivity(), CasesAdapter.CasesClickListener,
 
     override fun onMenuItemClick(item: MenuItem?): Boolean {
         if (item?.itemId == R.id.trash_delete_case) {
-            viewModel.deleteCase(selectedCase)
+            viewModel.deleteTrash(selectedTrash)
 
             return true
         } else if (item?.itemId == R.id.trash_restore_case) {
+            /*Do something here*/
             val intent = Intent(this, SearchCase::class.java)
-            getContent.launch(intent)
+            getTrashContent.launch(intent)
 
             return true
         }
