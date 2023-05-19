@@ -1,4 +1,4 @@
-package com.example.cases.models
+package com.example.cases.models.vm
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.example.cases.database.CaseDatabase
 import com.example.cases.database.CasesRepository
+import com.example.cases.models.data.Case
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

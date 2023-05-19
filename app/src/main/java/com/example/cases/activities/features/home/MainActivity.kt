@@ -1,4 +1,4 @@
-package com.example.cases.activities
+package com.example.cases.activities.features.home
 
 import android.app.Activity
 import android.content.Intent
@@ -7,18 +7,20 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.widget.LinearLayout
 import android.widget.PopupMenu
-import android.widget.SearchView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.cardview.widget.CardView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.cases.R
+import com.example.cases.activities.features.search.SearchCase
+import com.example.cases.activities.features.trash.TrashCase
+import com.example.cases.activities.features.insert.AddCase
 import com.example.cases.adapter.CasesAdapter
 import com.example.cases.database.CaseDatabase
 import com.example.cases.databinding.ActivityMainBinding
-import com.example.cases.models.Case
-import com.example.cases.models.CaseViewModel
+import com.example.cases.models.data.Case
+import com.example.cases.models.vm.CaseViewModel
 
 class MainActivity : AppCompatActivity(), CasesAdapter.CasesClickListener,
     PopupMenu.OnMenuItemClickListener {

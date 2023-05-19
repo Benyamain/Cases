@@ -12,23 +12,23 @@
         android:theme="@style/Theme.Cases"
         tools:targetApi="31">
         <activity
-            android:name=".activities.TrashCaseView"
+            android:name=".activities.features.trash.view.TrashCaseView"
             android:screenOrientation="portrait"
             android:exported="false" />
         <activity
-            android:name=".activities.TrashCase"
+            android:name=".activities.features.trash.TrashCase"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.SearchCase"
+            android:name=".activities.features.search.SearchCase"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.AddCase"
+            android:name=".activities.features.insert.AddCase"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.MainActivity"
+            android:name=".activities.features.home.MainActivity"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>

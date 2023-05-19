@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.cases.models.Case
+import com.example.cases.models.data.Case
 import com.example.cases.utilities.DATABASE_NAME
 
 @Database(entities = arrayOf(Case::class), version = 1, exportSchema = false)

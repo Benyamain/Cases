@@ -6,7 +6,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.cases.models.Case
+import com.example.cases.models.data.Case
 
 @Dao
 interface CaseDao {

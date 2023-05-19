@@ -1,4 +1,4 @@
-package com.example.cases.models
+package com.example.cases.models.data
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

@@ -1,4 +1,4 @@
-package com.example.cases.activities
+package com.example.cases.activities.features.trash
 
 import android.app.Activity
 import android.content.Intent
@@ -13,11 +13,14 @@ import androidx.cardview.widget.CardView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.cases.R
+import com.example.cases.activities.features.trash.view.TrashCaseView
+import com.example.cases.activities.features.home.MainActivity
+import com.example.cases.activities.features.search.SearchCase
 import com.example.cases.adapter.CasesAdapter
 import com.example.cases.database.CaseDatabase
 import com.example.cases.databinding.ActivityTrashCaseBinding
-import com.example.cases.models.Case
-import com.example.cases.models.CaseViewModel
+import com.example.cases.models.data.Case
+import com.example.cases.models.vm.CaseViewModel
 
 class TrashCase : AppCompatActivity(), CasesAdapter.CasesClickListener,
     PopupMenu.OnMenuItemClickListener {

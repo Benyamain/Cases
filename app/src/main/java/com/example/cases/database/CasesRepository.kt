@@ -1,7 +1,7 @@
 package com.example.cases.database
 
 import androidx.lifecycle.LiveData
-import com.example.cases.models.Case
+import com.example.cases.models.data.Case
 
 // Acts as an intermediate between our activities and our database
 class CasesRepository(private val caseDao: CaseDao) {

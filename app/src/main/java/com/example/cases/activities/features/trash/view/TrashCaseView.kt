@@ -1,18 +1,11 @@
-package com.example.cases.activities
+package com.example.cases.activities.features.trash.view
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import androidx.annotation.RequiresApi
-import com.example.cases.databinding.ActivityAddCaseBinding
 import com.example.cases.databinding.ActivityTrashCaseViewBinding
-import com.example.cases.models.Case
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
+import com.example.cases.models.data.Case
 import java.util.*
 
 class TrashCaseView : AppCompatActivity() {

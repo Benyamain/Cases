@@ -1,4 +1,4 @@
-package com.example.cases.activities
+package com.example.cases.activities.features.search
 
 import android.app.Activity
 import android.content.Intent
@@ -15,11 +15,12 @@ import androidx.cardview.widget.CardView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.cases.R
+import com.example.cases.activities.features.insert.AddCase
 import com.example.cases.adapter.CasesAdapter
 import com.example.cases.database.CaseDatabase
 import com.example.cases.databinding.ActivitySearchCaseBinding
-import com.example.cases.models.Case
-import com.example.cases.models.CaseViewModel
+import com.example.cases.models.data.Case
+import com.example.cases.models.vm.CaseViewModel
 import java.util.*
 
 class SearchCase : AppCompatActivity(), CasesAdapter.CasesClickListener, PopupMenu.OnMenuItemClickListener {
@@ -62,7 +63,8 @@ class SearchCase : AppCompatActivity(), CasesAdapter.CasesClickListener, PopupMe
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 if (newText != null) {
-                    viewModel = ViewModelProvider(this@SearchCase, ViewModelProvider.AndroidViewModelFactory.getInstance(application)).get(CaseViewModel::class.java)
+                    viewModel = ViewModelProvider(this@SearchCase, ViewModelProvider.AndroidViewModelFactory.getInstance(application)).get(
+                        CaseViewModel::class.java)
                     viewModel.allCases.observe(this@SearchCase) { list ->
                         list?.let {
                             for (item in list) {
