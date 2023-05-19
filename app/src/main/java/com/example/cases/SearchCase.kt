@@ -2,25 +2,28 @@ package com.example.cases
 
 import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.LinearLayout
 import android.widget.PopupMenu
 import android.widget.SearchView
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.cases.adapter.CasesAdapter
 import com.example.cases.database.CaseDatabase
-import com.example.cases.databinding.ActivityMainBinding
+import com.example.cases.databinding.ActivitySearchCaseBinding
 import com.example.cases.models.Case
 import com.example.cases.models.CaseViewModel
+import java.util.*
 
-class MainActivity : AppCompatActivity(), CasesAdapter.CasesClickListener, PopupMenu.OnMenuItemClickListener {
+class SearchCase : AppCompatActivity(), CasesAdapter.CasesClickListener, PopupMenu.OnMenuItemClickListener {
 
-    private lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivitySearchCaseBinding
     private lateinit var database: CaseDatabase
     lateinit var viewModel: CaseViewModel
     lateinit var adapter: CasesAdapter
@@ -36,9 +39,10 @@ class MainActivity : AppCompatActivity(), CasesAdapter.CasesClickListener, Popup
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivitySearchCaseBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         initializeUI()
@@ -54,35 +58,29 @@ class MainActivity : AppCompatActivity(), CasesAdapter.CasesClickListener, Popup
     }
 
     private fun initializeUI() {
-        binding.homeRecyclerView.setHasFixedSize(true)
-        binding.homeRecyclerView.layoutManager = StaggeredGridLayoutManager(2, LinearLayout.VERTICAL)
+        binding.searchRecyclerView.setHasFixedSize(true)
+        binding.searchRecyclerView.layoutManager = StaggeredGridLayoutManager(2, LinearLayout.VERTICAL)
         adapter = CasesAdapter(this, this)
-        binding.homeRecyclerView.adapter = adapter
+        binding.searchRecyclerView.adapter = adapter
 
-        // When user taps on fab, we retrieve the result code
-        val getContent = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                val case = result.data?.getSerializableExtra("case") as? Case
-
-                if (case != null) {
-                    viewModel.insertCase(case)
-                }
+        binding.searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(p0: String?): Boolean {
+                return false
             }
-        }
 
-        binding.fbAddCase.setOnClickListener {
-            val intent = Intent(this, AddCase::class.java)
-            getContent.launch(intent)
-        }
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText != null) {
+                    adapter.filterList(newText)
+                }
 
-        binding.imageSearch.setOnClickListener {
-            val intent = Intent(this, SearchCase::class.java)
-            getContent.launch(intent)
-        }
+                return true
+            }
+
+        })
     }
 
     override fun onItemClicked(case: Case) {
-        val intent = Intent(this@MainActivity, AddCase::class.java)
+        val intent = Intent(this@SearchCase, AddCase::class.java)
         intent.putExtra("current_case", case)
         updateCase.launch(intent)
     }
@@ -94,7 +92,7 @@ class MainActivity : AppCompatActivity(), CasesAdapter.CasesClickListener, Popup
 
     private fun popupDisplay(cardView: CardView) {
         val popup = PopupMenu(this, cardView)
-        popup.setOnMenuItemClickListener(this@MainActivity)
+        popup.setOnMenuItemClickListener(this@SearchCase)
         popup.inflate(R.menu.popup_menu)
         popup.show()
     }

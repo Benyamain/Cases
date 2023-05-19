@@ -12,7 +12,7 @@
         android:theme="@style/Theme.Cases"
         tools:targetApi="31">
         <activity
-            android:name=".SearchActivity"
+            android:name=".SearchCase"
             android:screenOrientation="portrait"
             android:exported="false" />
         <activity
