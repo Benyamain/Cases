@@ -67,6 +67,7 @@
         android:hint="Start Typing ..."
         android:lineSpacingMultiplier="1.8"
         android:background="@null"
+        android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/et_title"
         app:layout_constraintStart_toStartOf="@+id/et_title"
