@@ -2,21 +2,19 @@ package com.example.cases.activities
 
 import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.LinearLayout
 import android.widget.PopupMenu
-import android.widget.SearchView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.cases.R
 import com.example.cases.adapter.CasesAdapter
 import com.example.cases.database.CaseDatabase
-import com.example.cases.databinding.ActivityMainBinding
 import com.example.cases.databinding.ActivityTrashCaseBinding
 import com.example.cases.models.Case
 import com.example.cases.models.CaseViewModel
@@ -67,6 +65,8 @@ class TrashCase : AppCompatActivity(), CasesAdapter.CasesClickListener,
         ).get(CaseViewModel::class.java)
         viewModel.allCases.observe(this) { list ->
             list?.let {
+                val intent = Intent()
+                val caseList = intent.getSerializableExtra("trash_case") as? ArrayList<Case>
                 adapter.updateList(list)
             }
         }
@@ -80,9 +80,6 @@ class TrashCase : AppCompatActivity(), CasesAdapter.CasesClickListener,
             StaggeredGridLayoutManager(2, LinearLayout.VERTICAL)
         adapter = CasesAdapter(this, this)
         binding.trashRecyclerView.adapter = adapter
-
-        val intent = Intent()
-        val caseList = intent.getSerializableExtra("trash_case") as? ArrayList<Case>
 
         toggle = ActionBarDrawerToggle(
             this@TrashCase,
@@ -103,7 +100,9 @@ class TrashCase : AppCompatActivity(), CasesAdapter.CasesClickListener,
                 R.id.nav_download -> {}
                 R.id.nav_login -> {}
                 R.id.nav_settings -> {}
-                R.id.nav_trash -> {}
+                R.id.nav_trash -> {
+                    startActivity(Intent(this, TrashCase::class.java))
+                }
             }
 
             true
@@ -119,7 +118,7 @@ class TrashCase : AppCompatActivity(), CasesAdapter.CasesClickListener,
     }
 
     override fun onItemClicked(case: Case) {
-        val intent = Intent(this@TrashCase, AddCase::class.java)
+        val intent = Intent(this@TrashCase, TrashCaseView::class.java)
         intent.putExtra("current_case", case)
         updateCase.launch(intent)
     }
@@ -140,10 +139,10 @@ class TrashCase : AppCompatActivity(), CasesAdapter.CasesClickListener,
         if (item?.itemId == R.id.trash_delete_case) {
             viewModel.deleteCase(selectedCase)
 
-            val intent = Intent()
-            val caseList = ArrayList<Case>()
-            caseList.add(selectedCase)
-            intent.putExtra("trash_case", caseList)
+            return true
+        } else if (item?.itemId == R.id.trash_restore_case) {
+            val intent = Intent(this, SearchCase::class.java)
+            getContent.launch(intent)
 
             return true
         }
