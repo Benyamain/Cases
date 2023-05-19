@@ -9,6 +9,7 @@ import android.widget.LinearLayout
 import android.widget.PopupMenu
 import android.widget.SearchView
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.cardview.widget.CardView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -25,6 +26,7 @@ class MainActivity : AppCompatActivity(), CasesAdapter.CasesClickListener, Popup
     lateinit var viewModel: CaseViewModel
     lateinit var adapter: CasesAdapter
     lateinit var selectedCase: Case
+    lateinit var toggle: ActionBarDrawerToggle
 
     private val updateCase = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
@@ -59,6 +61,23 @@ class MainActivity : AppCompatActivity(), CasesAdapter.CasesClickListener, Popup
         adapter = CasesAdapter(this, this)
         binding.homeRecyclerView.adapter = adapter
 
+        toggle = ActionBarDrawerToggle(this@MainActivity, binding.drawer, binding.toolbar, R.string.open, R.string.close)
+        binding.drawer.addDrawerListener(toggle)
+        toggle.syncState()
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        binding.navView.setNavigationItemSelectedListener {
+            when (it.itemId) {
+                R.id.nav_home -> {}
+                R.id.nav_download -> {}
+                R.id.nav_login -> {}
+                R.id.nav_settings -> {}
+                R.id.nav_trash -> {}
+            }
+
+            true
+        }
+
         // When user taps on fab, we retrieve the result code
         val getContent = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
@@ -79,6 +98,14 @@ class MainActivity : AppCompatActivity(), CasesAdapter.CasesClickListener, Popup
             val intent = Intent(this, SearchCase::class.java)
             getContent.launch(intent)
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (toggle.onOptionsItemSelected(item)) {
+            return true
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onItemClicked(case: Case) {
