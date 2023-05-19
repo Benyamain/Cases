@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.features.insert.AddCase">
+    tools:context=".activities.home.features.add.AddCase">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"

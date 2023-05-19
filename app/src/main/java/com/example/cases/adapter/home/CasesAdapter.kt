@@ -1,4 +1,4 @@
-package com.example.cases.adapter
+package com.example.cases.adapter.home
 
 import android.content.Context
 import android.view.LayoutInflater

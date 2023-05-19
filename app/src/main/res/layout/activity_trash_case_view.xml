@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.features.trash.view.TrashCaseView">
+    tools:context=".activities.trash.features.view.TrashCaseView">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/tcv_toolbar"

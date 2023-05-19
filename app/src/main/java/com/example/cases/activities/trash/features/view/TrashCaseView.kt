@@ -1,4 +1,4 @@
-package com.example.cases.activities.features.trash.view
+package com.example.cases.activities.trash.features.view
 
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity

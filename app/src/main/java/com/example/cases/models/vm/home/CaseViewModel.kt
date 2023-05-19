@@ -1,4 +1,4 @@
-package com.example.cases.models.vm
+package com.example.cases.models.vm.home
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel

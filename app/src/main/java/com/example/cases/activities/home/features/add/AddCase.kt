@@ -1,4 +1,4 @@
-package com.example.cases.activities.features.insert
+package com.example.cases.activities.home.features.add
 
 import android.app.Activity
 import android.content.Intent

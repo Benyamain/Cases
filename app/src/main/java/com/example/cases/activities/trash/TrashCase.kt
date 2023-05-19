@@ -1,31 +1,31 @@
-package com.example.cases.activities.features.home
+package com.example.cases.activities.trash
 
 import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.LinearLayout
 import android.widget.PopupMenu
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.cases.R
-import com.example.cases.activities.features.search.SearchCase
-import com.example.cases.activities.features.trash.TrashCase
-import com.example.cases.activities.features.insert.AddCase
-import com.example.cases.adapter.CasesAdapter
+import com.example.cases.activities.trash.features.view.TrashCaseView
+import com.example.cases.activities.home.MainActivity
+import com.example.cases.activities.home.features.search.SearchCase
+import com.example.cases.adapter.home.CasesAdapter
 import com.example.cases.database.db.CaseDatabase
-import com.example.cases.databinding.ActivityMainBinding
+import com.example.cases.databinding.ActivityTrashCaseBinding
 import com.example.cases.models.data.home.Case
-import com.example.cases.models.vm.CaseViewModel
+import com.example.cases.models.vm.home.CaseViewModel
 
-class MainActivity : AppCompatActivity(), CasesAdapter.CasesClickListener,
+class TrashCase : AppCompatActivity(), CasesAdapter.CasesClickListener,
     PopupMenu.OnMenuItemClickListener {
 
-    private lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityTrashCaseBinding
     private lateinit var database: CaseDatabase
     lateinit var viewModel: CaseViewModel
     lateinit var adapter: CasesAdapter
@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity(), CasesAdapter.CasesClickListener,
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityTrashCaseBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         initializeUI()
@@ -68,6 +68,8 @@ class MainActivity : AppCompatActivity(), CasesAdapter.CasesClickListener,
         ).get(CaseViewModel::class.java)
         viewModel.allCases.observe(this) { list ->
             list?.let {
+                /*val intent = Intent()
+                val caseList = intent.getSerializableExtra("trash_case") as? ArrayList<Case>*/
                 adapter.updateList(list)
             }
         }
@@ -76,24 +78,24 @@ class MainActivity : AppCompatActivity(), CasesAdapter.CasesClickListener,
     }
 
     private fun initializeUI() {
-        binding.homeRecyclerView.setHasFixedSize(true)
-        binding.homeRecyclerView.layoutManager =
+        binding.trashRecyclerView.setHasFixedSize(true)
+        binding.trashRecyclerView.layoutManager =
             StaggeredGridLayoutManager(2, LinearLayout.VERTICAL)
         adapter = CasesAdapter(this, this)
-        binding.homeRecyclerView.adapter = adapter
+        binding.trashRecyclerView.adapter = adapter
 
         toggle = ActionBarDrawerToggle(
-            this@MainActivity,
-            binding.drawer,
-            binding.toolbar,
+            this@TrashCase,
+            binding.trashDrawer,
+            binding.trashToolbar,
             R.string.open,
             R.string.close
         )
-        binding.drawer.addDrawerListener(toggle)
+        binding.trashDrawer.addDrawerListener(toggle)
         toggle.syncState()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        binding.navView.setNavigationItemSelectedListener {
+        binding.trashNavView.setNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.nav_home -> {
                     startActivity(Intent(this, MainActivity::class.java))
@@ -109,12 +111,7 @@ class MainActivity : AppCompatActivity(), CasesAdapter.CasesClickListener,
             true
         }
 
-        binding.fbAddCase.setOnClickListener {
-            val intent = Intent(this, AddCase::class.java)
-            getContent.launch(intent)
-        }
-
-        binding.imageSearch.setOnClickListener {
+        binding.trashImageSearch.setOnClickListener {
             val intent = Intent(this, SearchCase::class.java)
             getContent.launch(intent)
         }
@@ -129,7 +126,7 @@ class MainActivity : AppCompatActivity(), CasesAdapter.CasesClickListener,
     }
 
     override fun onItemClicked(case: Case) {
-        val intent = Intent(this@MainActivity, AddCase::class.java)
+        val intent = Intent(this@TrashCase, TrashCaseView::class.java)
         intent.putExtra("current_case", case)
         updateCase.launch(intent)
     }
@@ -141,19 +138,19 @@ class MainActivity : AppCompatActivity(), CasesAdapter.CasesClickListener,
 
     private fun popupDisplay(cardView: CardView) {
         val popup = PopupMenu(this, cardView)
-        popup.setOnMenuItemClickListener(this@MainActivity)
-        popup.inflate(R.menu.popup_menu)
+        popup.setOnMenuItemClickListener(this@TrashCase)
+        popup.inflate(R.menu.trash_popup_menu)
         popup.show()
     }
 
     override fun onMenuItemClick(item: MenuItem?): Boolean {
-        if (item?.itemId == R.id.delete_case) {
+        if (item?.itemId == R.id.trash_delete_case) {
             viewModel.deleteCase(selectedCase)
 
-            /*val intent = Intent()
-            val caseList = ArrayList<Case>()
-            caseList.add(selectedCase)
-            intent.putExtra("trash_case", caseList)*/
+            return true
+        } else if (item?.itemId == R.id.trash_restore_case) {
+            val intent = Intent(this, SearchCase::class.java)
+            getContent.launch(intent)
 
             return true
         }

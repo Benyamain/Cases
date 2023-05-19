@@ -1,4 +1,4 @@
-package com.example.cases.activities.features.search
+package com.example.cases.activities.home.features.search
 
 import android.app.Activity
 import android.content.Intent
@@ -15,12 +15,12 @@ import androidx.cardview.widget.CardView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.cases.R
-import com.example.cases.activities.features.insert.AddCase
-import com.example.cases.adapter.CasesAdapter
+import com.example.cases.activities.home.features.add.AddCase
+import com.example.cases.adapter.home.CasesAdapter
 import com.example.cases.database.db.CaseDatabase
 import com.example.cases.databinding.ActivitySearchCaseBinding
 import com.example.cases.models.data.home.Case
-import com.example.cases.models.vm.CaseViewModel
+import com.example.cases.models.vm.home.CaseViewModel
 import java.util.*
 
 class SearchCase : AppCompatActivity(), CasesAdapter.CasesClickListener, PopupMenu.OnMenuItemClickListener {
