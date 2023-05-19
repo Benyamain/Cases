@@ -1,4 +1,4 @@
-package com.example.notes
+package com.example.cases
 
 import android.app.Activity
 import android.content.Intent
@@ -12,26 +12,26 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.cardview.widget.CardView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.example.notes.adapter.ScoresAdapter
-import com.example.notes.database.ScoreDatabase
-import com.example.notes.databinding.ActivityMainBinding
-import com.example.notes.models.Score
-import com.example.notes.models.ScoreViewModel
+import com.example.cases.adapter.CasesAdapter
+import com.example.cases.database.CaseDatabase
+import com.example.cases.databinding.ActivityMainBinding
+import com.example.cases.models.Case
+import com.example.cases.models.CaseViewModel
 
-class MainActivity : AppCompatActivity(), ScoresAdapter.ScoresClickListener, PopupMenu.OnMenuItemClickListener {
+class MainActivity : AppCompatActivity(), CasesAdapter.CasesClickListener, PopupMenu.OnMenuItemClickListener {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var database: ScoreDatabase
-    lateinit var viewModel: ScoreViewModel
-    lateinit var adapter: ScoresAdapter
-    lateinit var selectedScore: Score
+    private lateinit var database: CaseDatabase
+    lateinit var viewModel: CaseViewModel
+    lateinit var adapter: CasesAdapter
+    lateinit var selectedCase: Case
 
-    private val updateScore = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+    private val updateCase = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
-            val score = result.data?.getSerializableExtra("score") as? Score
+            val case = result.data?.getSerializableExtra("case") as? Case
 
-            if (score != null) {
-                viewModel.updateScore(score)
+            if (case != null) {
+                viewModel.updateCase(case)
             }
         }
     }
@@ -43,35 +43,35 @@ class MainActivity : AppCompatActivity(), ScoresAdapter.ScoresClickListener, Pop
 
         initializeUI()
 
-        viewModel = ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(application)).get(ScoreViewModel::class.java)
-        viewModel.allScores.observe(this) { list ->
+        viewModel = ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(application)).get(CaseViewModel::class.java)
+        viewModel.allCases.observe(this) { list ->
             list?.let {
                 adapter.updateList(list)
             }
         }
 
-        database = ScoreDatabase.getDatabase(this)
+        database = CaseDatabase.getDatabase(this)
     }
 
     private fun initializeUI() {
         binding.recyclerView.setHasFixedSize(true)
         binding.recyclerView.layoutManager = StaggeredGridLayoutManager(2, LinearLayout.VERTICAL)
-        adapter = ScoresAdapter(this, this)
+        adapter = CasesAdapter(this, this)
         binding.recyclerView.adapter = adapter
 
         // When user taps on fab, we retrieve the result code
         val getContent = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
-                val score = result.data?.getSerializableExtra("score") as? Score
+                val case = result.data?.getSerializableExtra("case") as? Case
 
-                if (score != null) {
-                    viewModel.insertScore(score)
+                if (case != null) {
+                    viewModel.insertCase(case)
                 }
             }
         }
 
-        binding.fbAddScore.setOnClickListener {
-            val intent = Intent(this, AddScore::class.java)
+        binding.fbAddCase.setOnClickListener {
+            val intent = Intent(this, AddCase::class.java)
             getContent.launch(intent)
         }
 
@@ -91,14 +91,14 @@ class MainActivity : AppCompatActivity(), ScoresAdapter.ScoresClickListener, Pop
         })
     }
 
-    override fun onItemClicked(score: Score) {
-        val intent = Intent(this@MainActivity, AddScore::class.java)
-        intent.putExtra("currentScore", score)
-        updateScore.launch(intent)
+    override fun onItemClicked(case: Case) {
+        val intent = Intent(this@MainActivity, AddCase::class.java)
+        intent.putExtra("current_case", case)
+        updateCase.launch(intent)
     }
 
-    override fun onLongItemClicked(score: Score, cardView: CardView) {
-        selectedScore = score
+    override fun onLongItemClicked(case: Case, cardView: CardView) {
+        selectedCase = case
         popupDisplay(cardView)
     }
 
@@ -110,8 +110,8 @@ class MainActivity : AppCompatActivity(), ScoresAdapter.ScoresClickListener, Pop
     }
 
     override fun onMenuItemClick(item: MenuItem?): Boolean {
-        if (item?.itemId == R.id.delete_score) {
-            viewModel.deleteScore(selectedScore)
+        if (item?.itemId == R.id.delete_case) {
+            viewModel.deleteCase(selectedCase)
 
             return true
         }

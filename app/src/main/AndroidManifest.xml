@@ -9,10 +9,10 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Notes"
+        android:theme="@style/Theme.Cases"
         tools:targetApi="31">
         <activity
-            android:name=".AddScore"
+            android:name=".AddCase"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

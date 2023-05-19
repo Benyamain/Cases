@@ -13,7 +13,7 @@
         android:layout_margin="16dp"
         android:elevation="8dp"
         android:iconifiedByDefault="false"
-        android:queryHint="Search Scores"
+        android:queryHint="Search Cases"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -33,7 +33,7 @@
     </androidx.recyclerview.widget.RecyclerView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fb_add_score"
+        android:id="@+id/fb_add_case"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="26dp"

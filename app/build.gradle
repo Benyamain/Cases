@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace 'com.example.notes'
+    namespace 'com.example.cases'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.example.notes"
+        applicationId "com.example.cases"
         minSdk 24
         targetSdk 33
         versionCode 1
