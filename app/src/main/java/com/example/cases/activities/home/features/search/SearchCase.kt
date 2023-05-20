@@ -50,6 +50,18 @@ class SearchCase : AppCompatActivity(), CasesAdapter.CasesClickListener, PopupMe
         setContentView(binding.root)
 
         initializeUI()
+
+        viewModel = ViewModelProvider(
+            this,
+            ViewModelProvider.AndroidViewModelFactory.getInstance(application)
+        ).get(CaseViewModel::class.java)
+        viewModel.allCases.observe(this) { list ->
+            list?.let {
+                adapter.updateList(list)
+            }
+        }
+
+        database = CaseDatabase.getDatabase(this)
     }
 
     private fun initializeUI() {

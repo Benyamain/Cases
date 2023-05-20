@@ -65,6 +65,18 @@ class SearchTrashCase : AppCompatActivity(), TrashAdapter.CasesClickListener, Po
         setContentView(binding.root)
 
         initializeUI()
+
+        viewModel = ViewModelProvider(
+            this,
+            ViewModelProvider.AndroidViewModelFactory.getInstance(application)
+        ).get(TrashViewModel::class.java)
+        viewModel.allTrash.observe(this) { list ->
+            list?.let {
+                adapter.updateList(list)
+            }
+        }
+
+        database = CaseDatabase.getDatabase(this)
     }
 
     private fun initializeUI() {

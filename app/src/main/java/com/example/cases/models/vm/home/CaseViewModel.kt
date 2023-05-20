@@ -1,6 +1,9 @@
 package com.example.cases.models.vm.home
 
 import android.app.Application
+import android.net.Uri
+import android.os.Environment
+import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
@@ -9,6 +12,8 @@ import com.example.cases.database.home.repository.CasesRepository
 import com.example.cases.models.data.home.Case
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.io.File
+import java.io.FileOutputStream
 
 class CaseViewModel(application: Application): AndroidViewModel(application) {
     private val repository: CasesRepository

@@ -107,8 +107,6 @@ class TrashCase : AppCompatActivity(), TrashAdapter.CasesClickListener,
                     startActivity(Intent(this, MainActivity::class.java))
                 }
                 R.id.nav_download -> {}
-                R.id.nav_login -> {}
-                R.id.nav_settings -> {}
                 R.id.nav_trash -> {
                     startActivity(Intent(this, TrashCase::class.java))
                 }

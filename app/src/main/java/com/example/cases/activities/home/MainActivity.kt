@@ -1,22 +1,28 @@
 package com.example.cases.activities.home
 
+import android.Manifest
 import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.util.Log
 import android.view.MenuItem
 import android.widget.LinearLayout
 import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.cases.R
+import com.example.cases.activities.home.features.add.AddCase
 import com.example.cases.activities.home.features.search.SearchCase
 import com.example.cases.activities.trash.TrashCase
-import com.example.cases.activities.home.features.add.AddCase
 import com.example.cases.adapter.home.CasesAdapter
 import com.example.cases.database.db.CaseDatabase
 import com.example.cases.databinding.ActivityMainBinding
@@ -24,9 +30,11 @@ import com.example.cases.models.data.home.Case
 import com.example.cases.models.data.trash.Trash
 import com.example.cases.models.vm.home.CaseViewModel
 import com.example.cases.models.vm.trash.TrashViewModel
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
+import java.io.BufferedWriter
+import java.io.File
+import java.io.FileWriter
+import java.io.IOException
+
 
 class MainActivity : AppCompatActivity(), CasesAdapter.CasesClickListener,
     PopupMenu.OnMenuItemClickListener {
@@ -105,6 +113,52 @@ class MainActivity : AppCompatActivity(), CasesAdapter.CasesClickListener,
         database = CaseDatabase.getDatabase(this)
     }
 
+    private fun commonDocumentDirPath(): File? {
+        var dir: File? = null
+        dir = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            File(
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
+                    .toString() + "/cases"
+            )
+        } else {
+            File(Environment.getExternalStorageDirectory().toString() + "/cases")
+        }
+
+        if (!dir.exists()) {
+            val success = dir.mkdirs()
+            if (!success) {
+                dir = null
+            }
+        }
+        return dir
+    }
+
+    private fun writeToFile(data: List<Case>, fileName: String) {
+        val directory = commonDocumentDirPath()
+        val file = File(directory, fileName)
+
+        try {
+            val writer = FileWriter(file)
+            val buffer = BufferedWriter(writer)
+
+            for (dataPoint in data) {
+                buffer.write(dataPoint.toString())
+                buffer.newLine()
+            }
+
+            buffer.close()
+            writer.close()
+
+            Toast.makeText(this, "File downloaded", Toast.LENGTH_SHORT).show()
+
+            Log.d("FileWrite", "Data written to $file")
+        } catch (e: IOException) {
+            Toast.makeText(this, "File error", Toast.LENGTH_SHORT).show()
+            Log.e("FileWrite", "Error writing to file: ${e.message}")
+        }
+    }
+
+
     private fun initializeUI() {
         binding.homeRecyclerView.setHasFixedSize(true)
         binding.homeRecyclerView.layoutManager =
@@ -128,9 +182,13 @@ class MainActivity : AppCompatActivity(), CasesAdapter.CasesClickListener,
                 R.id.nav_home -> {
                     startActivity(Intent(this, MainActivity::class.java))
                 }
-                R.id.nav_download -> {}
-                R.id.nav_login -> {}
-                R.id.nav_settings -> {}
+                R.id.nav_download -> {
+                    caseViewModel.allCases.observe(this) { list ->
+                        list?.let {
+                            writeToFile(list, "cases.txt")
+                        }
+                    }
+                }
                 R.id.nav_trash -> {
                     startActivity(Intent(this, TrashCase::class.java))
                 }
@@ -190,7 +248,6 @@ class MainActivity : AppCompatActivity(), CasesAdapter.CasesClickListener,
             intent.putExtra("trash", trash)
             Log.d("Garbage", "${intent.extras}")
             setResult(Activity.RESULT_OK, intent)
-
 
             caseViewModel.deleteCase(selectedCase)
 
