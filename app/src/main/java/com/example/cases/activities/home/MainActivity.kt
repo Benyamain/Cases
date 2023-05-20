@@ -141,15 +141,22 @@ class MainActivity : AppCompatActivity(), CasesAdapter.CasesClickListener,
             val writer = FileWriter(file)
             val buffer = BufferedWriter(writer)
 
+            var isFirstLine = true
+
             for (dataPoint in data) {
-                buffer.write(dataPoint.toString())
+                if (isFirstLine) {
+                    buffer.write("\t\t\tHome\n\n${dataPoint.toString()}")
+                    isFirstLine = false
+                } else {
+                    buffer.write(dataPoint.toString())
+                }
                 buffer.newLine()
             }
 
             buffer.close()
             writer.close()
 
-            Toast.makeText(this, "File downloaded", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "File downloaded in Internal Storage Documents directory", Toast.LENGTH_LONG).show()
 
             Log.d("FileWrite", "Data written to $file")
         } catch (e: IOException) {

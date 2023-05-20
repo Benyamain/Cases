@@ -2,11 +2,14 @@ package com.example.cases.activities.trash
 
 import android.app.Activity
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.util.Log
 import android.view.MenuItem
 import android.widget.LinearLayout
 import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -23,6 +26,10 @@ import com.example.cases.database.db.CaseDatabase
 import com.example.cases.databinding.ActivityTrashCaseBinding
 import com.example.cases.models.data.trash.Trash
 import com.example.cases.models.vm.trash.TrashViewModel
+import java.io.BufferedWriter
+import java.io.File
+import java.io.FileWriter
+import java.io.IOException
 
 class TrashCase : AppCompatActivity(), TrashAdapter.CasesClickListener,
     PopupMenu.OnMenuItemClickListener {
@@ -106,7 +113,13 @@ class TrashCase : AppCompatActivity(), TrashAdapter.CasesClickListener,
                 R.id.nav_home -> {
                     startActivity(Intent(this, MainActivity::class.java))
                 }
-                R.id.nav_download -> {}
+                R.id.nav_download -> {
+                    viewModel.allTrash.observe(this) { list ->
+                        list?.let {
+                            writeToFile(list, "trash_cases.txt")
+                        }
+                    }
+                }
                 R.id.nav_trash -> {
                     startActivity(Intent(this, TrashCase::class.java))
                 }
@@ -118,6 +131,58 @@ class TrashCase : AppCompatActivity(), TrashAdapter.CasesClickListener,
         binding.trashImageSearch.setOnClickListener {
             val intent = Intent(this, SearchTrashCase::class.java)
             getTrashContent.launch(intent)
+        }
+    }
+
+    private fun commonDocumentDirPath(): File? {
+        var dir: File? = null
+        dir = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            File(
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
+                    .toString() + "/cases"
+            )
+        } else {
+            File(Environment.getExternalStorageDirectory().toString() + "/trash_cases")
+        }
+
+        if (!dir.exists()) {
+            val success = dir.mkdirs()
+            if (!success) {
+                dir = null
+            }
+        }
+        return dir
+    }
+
+    private fun writeToFile(data: List<Trash>, fileName: String) {
+        val directory = commonDocumentDirPath()
+        val file = File(directory, fileName)
+
+        try {
+            val writer = FileWriter(file)
+            val buffer = BufferedWriter(writer)
+
+            var isFirstLine = true
+
+            for (dataPoint in data) {
+                if (isFirstLine) {
+                    buffer.write("\t\t\tTrash\n\n${dataPoint.toString()}")
+                    isFirstLine = false
+                } else {
+                    buffer.write(dataPoint.toString())
+                }
+                buffer.newLine()
+            }
+
+            buffer.close()
+            writer.close()
+
+            Toast.makeText(this, "File downloaded in Internal Storage Documents directory", Toast.LENGTH_LONG).show()
+
+            Log.d("FileWrite", "Data written to $file")
+        } catch (e: IOException) {
+            Toast.makeText(this, "File error", Toast.LENGTH_SHORT).show()
+            Log.e("FileWrite", "Error writing to file: ${e.message}")
         }
     }
 
