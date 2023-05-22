@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
+import android.provider.ContactsContract
 import android.util.Log
 import android.view.MenuItem
 import android.widget.LinearLayout
@@ -20,7 +21,6 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.cases.R
-import com.example.cases.activities.common.Note
 import com.example.cases.activities.home.features.add.AddCase
 import com.example.cases.activities.home.features.search.SearchCase
 import com.example.cases.activities.trash.TrashCase
@@ -75,7 +75,7 @@ class MainActivity : AppCompatActivity(), CasesAdapter.CasesClickListener,
     private val updateTrash =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
-                val trashCase = result.data?.getSerializableExtra("trash") as? Note
+                val trashCase = result.data?.getSerializableExtra("trash") as? Trash
 
                 if (trashCase != null) {
                     trashViewModel.updateTrash(trashCase)
@@ -86,7 +86,7 @@ class MainActivity : AppCompatActivity(), CasesAdapter.CasesClickListener,
     private val getTrashContent =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
-                val trash = result.data?.getSerializableExtra("trash") as? Note
+                val trash = result.data?.getSerializableExtra("trash") as? Trash
 
                 if (trash != null) {
                     trashViewModel.insertTrash(trash)
