@@ -157,8 +157,6 @@ class MainActivity : AppCompatActivity(), CasesAdapter.CasesClickListener,
             buffer.close()
             writer.close()
 
-            Toast.makeText(this, "File downloaded in Internal Storage Documents directory", Toast.LENGTH_LONG).show()
-
             Log.d("FileWrite", "Data written to $file")
         } catch (e: IOException) {
             Toast.makeText(this, "File error", Toast.LENGTH_SHORT).show()
@@ -196,6 +194,7 @@ class MainActivity : AppCompatActivity(), CasesAdapter.CasesClickListener,
                             writeToFile(list, "cases.txt")
                         }
                     }
+                    Toast.makeText(this, "File downloaded in Internal Storage Documents directory", Toast.LENGTH_LONG).show()
                 }
                 R.id.nav_trash -> {
                     startActivity(Intent(this, TrashCase::class.java))
@@ -249,16 +248,8 @@ class MainActivity : AppCompatActivity(), CasesAdapter.CasesClickListener,
             val caseDescription = selectedCase.databaseCase
             val caseDate = selectedCase.date
 
-            val s1 = selectedCase.sliderOne
-            val s2 = selectedCase.sliderTwo
-            val s3 = selectedCase.sliderThree
-            val s4 = selectedCase.sliderFour
-            val s5 = selectedCase.sliderFive
-            val s6 = selectedCase.sliderSix
-            val s7 = selectedCase.sliderSeven
-            val s8 = selectedCase.sliderEight
 
-            trash = Trash(id, title, caseDescription, caseDate, s1, s2, s3, s4, s5, s6, s7, s8)
+            trash = Trash(id, title, caseDescription, caseDate)
             Log.d("Garbage", "$trash")
 
             val intent = Intent()

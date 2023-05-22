@@ -124,16 +124,7 @@ class SearchCase : AppCompatActivity(), CasesAdapter.CasesClickListener, PopupMe
             val caseDescription = selectedCase.databaseCase.toString()
             val caseDate = selectedCase.date.toString()
 
-            val s1 = selectedCase.sliderOne
-            val s2 = selectedCase.sliderTwo
-            val s3 = selectedCase.sliderThree
-            val s4 = selectedCase.sliderFour
-            val s5 = selectedCase.sliderFive
-            val s6 = selectedCase.sliderSix
-            val s7 = selectedCase.sliderSeven
-            val s8 = selectedCase.sliderEight
-
-            trash = Trash(id, title, caseDescription, caseDate, s1, s2, s3, s4, s5, s6, s7, s8)
+            trash = Trash(id, title, caseDescription, caseDate)
 
             val intent = Intent()
             intent.putExtra("trash", trash)

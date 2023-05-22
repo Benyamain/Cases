@@ -10,7 +10,7 @@ import com.example.cases.models.data.home.Case
 import com.example.cases.models.data.trash.Trash
 import com.example.cases.utilities.DATABASE_NAME
 
-@Database(entities = [Case::class, Trash::class], version = 3, exportSchema = false)
+@Database(entities = [Case::class, Trash::class], version = 4, exportSchema = false)
 abstract class CaseDatabase: RoomDatabase() {
 
     abstract fun getCaseDao(): CaseDao

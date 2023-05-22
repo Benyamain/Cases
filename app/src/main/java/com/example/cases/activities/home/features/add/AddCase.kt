@@ -72,11 +72,9 @@ class AddCase : AppCompatActivity() {
                 val formatted = current.format(formatter)
 
                 if (isUpdate) {
-                    case = Case(oldCase.id, title, caseDescription, formatted, sliderValues[0], sliderValues[1], sliderValues[2], sliderValues[3], sliderValues[4]
-                        , sliderValues[5], sliderValues[6], sliderValues[7])
+                    case = Case(oldCase.id, title, caseDescription, formatted)
                 } else {
-                    case = Case(null, title, caseDescription, formatted, sliderValues[0], sliderValues[1], sliderValues[2], sliderValues[3], sliderValues[4]
-                        , sliderValues[5], sliderValues[6], sliderValues[7])
+                    case = Case(null, title, caseDescription, formatted)
                 }
 
                 val intent = Intent()
