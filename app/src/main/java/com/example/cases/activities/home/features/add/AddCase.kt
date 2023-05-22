@@ -5,20 +5,28 @@ import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.example.cases.adapter.home.CasesAdapter
+import com.example.cases.adapter.home.features.add.SliderAdapter
 import com.example.cases.databinding.ActivityAddCaseBinding
 import com.example.cases.models.data.home.Case
+import com.example.cases.models.data.home.features.add.Slider
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.util.*
+import kotlin.collections.ArrayList
 
 class AddCase : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddCaseBinding
     private lateinit var case: Case
     private lateinit var oldCase: Case
+    lateinit var adapter: SliderAdapter
     var isUpdate = false
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -65,5 +73,24 @@ class AddCase : AppCompatActivity() {
         binding.imageBackArrow.setOnClickListener {
             onBackPressed()
         }
+
+        initializeUI()
+    }
+
+    private fun initializeUI() {
+        val slider = ArrayList<Slider>()
+        slider.add(Slider("Extremity"))
+        slider.add(Slider("Narcissism"))
+        slider.add(Slider("Anxiety"))
+        slider.add(Slider("Assertiveness"))
+        slider.add(Slider("Openness to Experience"))
+        slider.add(Slider("Empathy"))
+        slider.add(Slider("Impulsivity"))
+        slider.add(Slider("Self-Control"))
+
+        binding.sliderRv.setHasFixedSize(true)
+        binding.sliderRv.layoutManager = LinearLayoutManager(this)
+        adapter = SliderAdapter(this, slider)
+        binding.sliderRv.adapter = adapter
     }
 }

@@ -68,8 +68,20 @@
         android:lineSpacingMultiplier="1.8"
         android:background="@null"
         android:scrollbars="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/slider_rv"
         app:layout_constraintEnd_toEndOf="@+id/et_title"
         app:layout_constraintStart_toStartOf="@+id/et_title"
         app:layout_constraintTop_toBottomOf="@+id/et_title" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/slider_rv"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        tools:listitem="@layout/slider_list"
+        tools:itemCount="8"
+        app:layout_constraintTop_toBottomOf="@id/et_case"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
