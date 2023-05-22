@@ -120,6 +120,7 @@ class TrashCase : AppCompatActivity(), TrashAdapter.CasesClickListener,
                             writeToFile(list, "trash_cases.txt")
                         }
                     }
+                    Toast.makeText(this, "File downloaded in Internal Storage Documents directory", Toast.LENGTH_LONG).show()
                 }
                 R.id.nav_trash -> {
                     startActivity(Intent(this, TrashCase::class.java))
@@ -177,8 +178,6 @@ class TrashCase : AppCompatActivity(), TrashAdapter.CasesClickListener,
 
             buffer.close()
             writer.close()
-
-            Toast.makeText(this, "File downloaded in Internal Storage Documents directory", Toast.LENGTH_LONG).show()
 
             Log.d("FileWrite", "Data written to $file")
         } catch (e: IOException) {
