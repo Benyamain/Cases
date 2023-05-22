@@ -18,6 +18,7 @@ class CasesRepository(private val caseDao: CaseDao) {
     }
 
     suspend fun update(case: Case) {
-        caseDao.update(case.id, case.title, case.databaseCase)
+        caseDao.update(case.id, case.title, case.databaseCase, case.sliderOne, case.sliderTwo, case.sliderThree, case.sliderFour,
+            case.sliderFive, case.sliderSix, case.sliderSeven, case.sliderEight)
     }
 }
