@@ -48,6 +48,23 @@ class AddCase : AppCompatActivity() {
             val title = binding.etTitle.text.toString()
             val caseDescription = binding.etCase.text.toString()
 
+            val slider = ArrayList<Slider>()
+            slider.add(Slider("Extremity", null))
+            slider.add(Slider("Narcissism", null))
+            slider.add(Slider("Anxiety", null))
+            slider.add(Slider("Assertiveness", null))
+            slider.add(Slider("Openness to Experience", null))
+            slider.add(Slider("Empathy", null))
+            slider.add(Slider("Impulsivity", null))
+            slider.add(Slider("Self-Control", null))
+
+            binding.sliderRv.setHasFixedSize(true)
+            binding.sliderRv.layoutManager = LinearLayoutManager(this)
+            adapter = SliderAdapter(this, slider)
+            binding.sliderRv.adapter = adapter
+
+            val sliderValues = adapter.getSliderValues()
+
             if (title.isNotEmpty() || caseDescription.isNotEmpty()) {
                 val current = LocalDateTime.now()
 
@@ -55,9 +72,11 @@ class AddCase : AppCompatActivity() {
                 val formatted = current.format(formatter)
 
                 if (isUpdate) {
-                    case = Case(oldCase.id, title, caseDescription, formatted)
+                    case = Case(oldCase.id, title, caseDescription, formatted, sliderValues[0], sliderValues[1], sliderValues[2], sliderValues[3], sliderValues[4]
+                        , sliderValues[5], sliderValues[6], sliderValues[7])
                 } else {
-                    case = Case(null, title, caseDescription, formatted)
+                    case = Case(null, title, caseDescription, formatted, sliderValues[0], sliderValues[1], sliderValues[2], sliderValues[3], sliderValues[4]
+                        , sliderValues[5], sliderValues[6], sliderValues[7])
                 }
 
                 val intent = Intent()
@@ -79,14 +98,14 @@ class AddCase : AppCompatActivity() {
 
     private fun initializeUI() {
         val slider = ArrayList<Slider>()
-        slider.add(Slider("Extremity"))
-        slider.add(Slider("Narcissism"))
-        slider.add(Slider("Anxiety"))
-        slider.add(Slider("Assertiveness"))
-        slider.add(Slider("Openness to Experience"))
-        slider.add(Slider("Empathy"))
-        slider.add(Slider("Impulsivity"))
-        slider.add(Slider("Self-Control"))
+        slider.add(Slider("Extremity", null))
+        slider.add(Slider("Narcissism", null))
+        slider.add(Slider("Anxiety", null))
+        slider.add(Slider("Assertiveness", null))
+        slider.add(Slider("Openness to Experience", null))
+        slider.add(Slider("Empathy", null))
+        slider.add(Slider("Impulsivity", null))
+        slider.add(Slider("Self-Control", null))
 
         binding.sliderRv.setHasFixedSize(true)
         binding.sliderRv.layoutManager = LinearLayoutManager(this)

@@ -17,6 +17,8 @@ class TrashRepository(private val trashDao: TrashDao) {
     }
 
     suspend fun updateTrash(trash: Trash) {
-        trashDao.update(trash.id, trash.title, trash.databaseCase)
+        trashDao.update(trash.id, trash.title, trash.databaseCase, trash.sliderOne, trash.sliderTwo, trash.sliderThree, trash.sliderFour,
+            trash.sliderFive, trash.sliderSix, trash.sliderSeven, trash.sliderEight)
     }
+
 }
