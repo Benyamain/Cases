@@ -160,7 +160,7 @@ class TrashCase : AppCompatActivity(), TrashAdapter.CasesClickListener,
             if (!success) {
                 dir = null
             }
-        }
+        } else return dir
         return dir
     }
 

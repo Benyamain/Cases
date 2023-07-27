@@ -135,7 +135,7 @@ class MainActivity : AppCompatActivity(), CasesAdapter.CasesClickListener,
             if (!success) {
                 dir = null
             }
-        }
+        } else return dir
         return dir
     }
 
