@@ -21,7 +21,7 @@ data class Case(
     @ColumnInfo(name = "slider_eight") val sliderEight: String?
 ) : java.io.Serializable {
     override fun toString(): String {
-        return "$title\nDate: $date\nSlider One: $sliderOne\tSlider Two: $sliderTwo\tSlider Three: $sliderThree\tSlider Four: $sliderFour" +
+        return "Title: $title\nDate: $date\nSlider One: $sliderOne\tSlider Two: $sliderTwo\tSlider Three: $sliderThree\tSlider Four: $sliderFour" +
                 "\nSlider Five: $sliderFive\tSlider Six: $sliderSix\tSlider Seven: $sliderSeven\tSlider Eight: $sliderEight\nDetails: $databaseCase\n\n\n"
     }
 }

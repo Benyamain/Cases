@@ -48,6 +48,7 @@ class MainActivity : AppCompatActivity(), CasesAdapter.CasesClickListener,
     lateinit var selectedCase: Case
     private lateinit var trash: Trash
     lateinit var toggle: ActionBarDrawerToggle
+    var outputLimitCount = 0
 
     private val updateCase =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -56,6 +57,8 @@ class MainActivity : AppCompatActivity(), CasesAdapter.CasesClickListener,
 
                 if (case != null) {
                     caseViewModel.updateCase(case)
+                    /* reset toast counter */
+                    outputLimitCount = 0
                 }
             }
         }
@@ -68,6 +71,8 @@ class MainActivity : AppCompatActivity(), CasesAdapter.CasesClickListener,
 
                 if (case != null) {
                     caseViewModel.insertCase(case)
+                    /* reset toast counter */
+                    outputLimitCount = 0
                 }
             }
         }
@@ -194,7 +199,10 @@ class MainActivity : AppCompatActivity(), CasesAdapter.CasesClickListener,
                             writeToFile(list, "cases.txt")
                         }
                     }
-                    Toast.makeText(this, "File downloaded in Internal Storage Documents directory", Toast.LENGTH_LONG).show()
+                    outputLimitCount++
+                    if (outputLimitCount <= 3) {
+                        Toast.makeText(this, "File downloaded in Internal Storage Documents directory", Toast.LENGTH_LONG).show()
+                    }
                 }
                 R.id.nav_trash -> {
                     startActivity(Intent(this, TrashCase::class.java))

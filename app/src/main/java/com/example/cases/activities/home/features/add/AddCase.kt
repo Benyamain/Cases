@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.example.cases.activities.home.MainActivity
 import com.example.cases.adapter.home.CasesAdapter
 import com.example.cases.adapter.home.features.add.SliderAdapter
 import com.example.cases.databinding.ActivityAddCaseBinding
